@@ -13,11 +13,11 @@ using Mortar2D: calculate_normals
         1 => :Seg2,
         2 => :Seg2)
     X = Dict(
-        1 => [0.0, 0.0],
-        2 => [1.0, 0.0],
-        3 => [2.0, 0.0])
+        1 => [7.0, 7.0],
+        2 => [4.0, 3.0],
+        3 => [0.0, 0.0])
     n = calculate_normals(elements, element_types, X)
-    @test n[1] == [0.0, 1.0]
-    @test n[2] == [0.0, 1.0]
-    @test n[3] == [0.0, 1.0]
+    @test isapprox(n[1], 1/5*[4, -3])
+    @test isapprox(n[2], sqrt(2)/2*[1, -1])
+    @test isapprox(n[3], 1/5*[3, -4])
 end

@@ -65,40 +65,6 @@ function project_from_slave_to_master{E<:MortarElements2D}(master_element::Eleme
     return xi2
 end
 
-function calculate_normals(elements, time, ::Type{Val{1}}; rotate_normals=false)
-    tangents = Dict{Int64, Vector{Float64}}()
-    for element in elements
-        conn = get_connectivity(element)
-        #X1 = element("geometry", time)
-        #dN = get_dbasis(element, [0.0], time)
-        #tangent = vec(sum([kron(dN[:,i], X1[i]') for i=1:length(X1)]))
-        tangent = vec(element([0.0], time, Val{:Jacobian}))
-        for nid in conn
-            if haskey(tangents, nid)
-                tangents[nid] += tangent
-            else
-                tangents[nid] = tangent
-            end
-        end
-    end
-
-    Q = [0.0 -1.0; 1.0 0.0]
-    normals = Dict{Int64, Vector{Float64}}()
-    S = collect(keys(tangents))
-    for j in S
-        tangents[j] /= norm(tangents[j])
-        normals[j] = Q*tangents[j]
-    end
-
-    if rotate_normals
-        for j in S
-            normals[j] = -normals[j]
-        end
-    end
-
-    return normals, tangents
-end
-
 function calculate_normals!(elements, time, ::Type{Val{1}}; rotate_normals=false)
     normals, tangents = calculate_normals(elements, time, Val{1}; rotate_normals=rotate_normals)
     for element in elements

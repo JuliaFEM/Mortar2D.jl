@@ -1,5 +1,5 @@
 # This file is a part of JuliaFEM.
-# License is MIT: see https://github.com/JuliaFEM/JuliaFEM.jl/blob/master/LICENSE.md
+# License is MIT: see https://github.com/JuliaFEM/Mortar2D.jl/blob/master/LICENSE
 
 const MortarElements2D = Union{Seg2,Seg3}
 

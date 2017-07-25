@@ -38,8 +38,8 @@ function project_from_master_to_slave{T<:Number}(::Type{Val{:Seg2}}, xm::Vector{
     denom_c = ns1[1]*xs1[2] - ns1[1]*xs2[2] - ns1[2]*xs1[1] + ns1[2]*xs2[1] - ns2[1]*xs1[2] + ns2[1]*xs2[2] + ns2[2]*xs1[1] - ns2[2]*xs2[1]
 
     a = 1.0
-    b = isapprox(denom_b, 0.0) ? nom_b : nom_b / denom_b
-    c = isapprox(denom_c, 0.0) ? nom_c : nom_c / denom_c
+    b = nom_b / denom_b
+    c = nom_c / denom_c
     d = b^2 - 4*a*c
     sols = [-b + sqrt(d), -b - sqrt(d)]/(2.0*a)
     return sols[indmin(abs.(sols))]

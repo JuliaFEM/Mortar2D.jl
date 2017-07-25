@@ -3,4 +3,5 @@
 
 module Mortar2D
 include("calculate_normals.jl")
+include("project_nodes.jl")
 end

@@ -3,6 +3,7 @@
 
 module Mortar2D
 include("calculate_normals.jl")
-include("project_nodes.jl")
+include("calculate_projections.jl")
 include("calculate_segments.jl")
+include("calculate_mortar_matrices.jl")
 end

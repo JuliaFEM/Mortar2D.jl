@@ -7,8 +7,9 @@ const to = TimerOutput()
 
 test_files = String[]
 push!(test_files, "test_calculate_normals.jl")
-push!(test_files, "test_project_nodes.jl")
+push!(test_files, "test_calculate_projections.jl")
 push!(test_files, "test_calculate_segments.jl")
+push!(test_files, "test_calculate_mortar_matrices.jl")
 
 @testset "Mortar2D.jl" begin
     for fn in test_files

@@ -22,3 +22,13 @@ end
     xi1 = project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)
     @test isapprox(xi1, -0.281575016087237)
 end
+
+@testset "project slave node to master surface" begin
+    xm = [111.013, 283.152]
+    xs1 = [244.82, 366.732]
+    xs2 = [291.474, 359.169]
+    ns1 = [-0.0765221, 0.997068]
+    ns2 = [0.251347, 0.967897]
+    # FIXME: fails for unknown reason
+    # project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)
+end

@@ -12,8 +12,10 @@ in nodes. As a result we get unique normal direction defined to each node.
 
 - Yang2005
 """
-function calculate_normals(elements::Dict{Int, Vector{Int}}, element_types::Dict{Int, Symbol}, X::Dict{Int, Vector{Float64}})
-    normals = Dict{Int64, Vector{Float64}}()
+function calculate_normals{T<:Integer,P<:AbstractFloat}(elements::Dict{T, Vector{T}},
+                                                        element_types::Dict{T, Symbol},
+                                                        X::Dict{T, Vector{P}})
+    normals = Dict{T, Vector{P}}()
     for (elid, elcon) in elements
         @assert element_types[elid] == :Seg2
         d = X[elcon[2]] - X[elcon[1]]

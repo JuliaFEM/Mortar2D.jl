@@ -25,11 +25,16 @@ function calculate_segments(slave_ids, master_ids, elements, element_types, coor
             mcon = elements[mid]
             xm1 = coords[mcon[1]]
             xm2 = coords[mcon[2]]
+            # first project from slave to master, to find out
+            # are we completely outside of domain
+            xi2a = project_from_slave_to_master(Val{:Seg2}, xs1, ns1, xm1, xm2)
+            xi2b = project_from_slave_to_master(Val{:Seg2}, xs2, ns2, xm1, xm2)
+            xi2a >  1.0 && xi2b >  1.0 && continue
+            xi2a < -1.0 && xi2b < -1.0 && continue
             xi1a = project_from_master_to_slave(Val{:Seg2}, xm1, xs1, xs2, ns1, ns2)
             xi1b = project_from_master_to_slave(Val{:Seg2}, xm2, xs1, xs2, ns1, ns2)
             xi1 = clamp.([xi1a; xi1b], -1.0, 1.0)
-            l = 1/2*abs(xi1[2]-xi1[1])
-            isapprox(l, 0.0) && continue
+            isapprox(abs(xi1[2]-xi1[1]), 0.0) && continue
             push!(S[sid], (mid, xi1))
         end
     end

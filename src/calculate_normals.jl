@@ -2,15 +2,30 @@
 # License is MIT: see https://github.com/JuliaFEM/Mortar2D.jl/blob/master/LICENSE
 
 """
-    calculate_normals(elements::Dict{Int, Vector{Int}}, element_types::Dict{Int, Symbol}, X::Dict{Int, Vector{Float64})
+    calculate_normals(elements::Dict{Int, Vector{Int}},
+                      element_types::Dict{Int, Symbol},
+                      X::Dict{Int, Vector{Float64})
 
 Given elements, element types and node locations, calculate nodal normals by
 first calculating normal directions for each element and then averaging them
 in nodes. As a result we get unique normal direction defined to each node.
 
-# References
+# Example
+```jldoctest
+X = Dict(1 => [7.0, 7.0], 2 => [4.0, 3.0], 3 => [0.0, 0.0])
+elements = Dict(1 => [1, 2], 2 => [2, 3])
+element_types = Dict(1 => :Seg2, 2 => :Seg2)
+normals = calculate_normals(elements, element_types, X)
 
-- Yang2005
+# output
+
+Dict{Int64,Array{Float64,1}} with 3 entries:
+  2 => [0.707107, -0.707107]
+  3 => [0.6, -0.8]
+  1 => [0.8, -0.6]
+
+```
+
 """
 function calculate_normals{T<:Integer,P<:AbstractFloat}(elements::Dict{T, Vector{T}},
                                                         element_types::Dict{T, Symbol},

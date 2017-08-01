@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Theory · Mortar2D</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link href="assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>Mortar2D</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" action="search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="index.html">Introduction</a></li><li class="current"><a class="toctext" href="theory.html">Theory</a><ul class="internal"><li class="toplevel"><a class="toctext" href="#References-1">References</a></li></ul></li><li><a class="toctext" href="api.html">API</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href="theory.html">Theory</a></li></ul><a class="edit-page" href="https://github.com/JuliaFEM/Mortar2D.jl/tree/83807212a2818f77e27122fcd2eb2fae8a363e73/docs/src/theory.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Theory</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Theory-1" href="#Theory-1">Theory</a></h1><p>Let us consider the simple following simple Laplace problem in the domain <span>$\Omega=\left\{ \left(x,y\right)\in\mathbb{R}^{2}|0\leq x,y\leq2\right\}$</span>.</p><p><img src="figs/poisson_problem.png" alt/></p><p>The strong form of the problem is </p><div>\[\begin{align}
+-\Delta u^{\left(i\right)} &amp; =0\qquad\text{in }\Omega^{\left(i\right)},i=1,2\\
+u^{\left(1\right)} &amp; =0\qquad\text{on }\Gamma_{\mathrm{D}}^{\left(1\right)}\\
+u^{\left(1\right)}-u^{\left(2\right)} &amp; =0\qquad\text{on }\Gamma_{\mathrm{C}}\\
+\frac{\partial u^{\left(2\right)}}{\partial n} &amp; =g\qquad\text{on }\Gamma_{\mathrm{N}}^{\left(2\right)}
+\end{align}\]</div><p>Corresponding weak form of the problem is to find <span>$u^{\left(i\right)}\in\mathcal{U}$ and $\lambda\in\mathcal{M}$</span> such that</p><div>\[\begin{align}
+\int_{\Omega}\nabla u\cdot\nabla v\,\mathrm{d}x+\int_{\Gamma_{\mathrm{C}}}\lambda\left(v^{\left(1\right)}-v^{\left(2\right)}\right)\,\mathrm{d}s &amp; =\int_{\Omega}fv\,\mathrm{d}x+\int_{\Gamma_{\mathrm{N}}}gv\,\mathrm{d}s &amp;  &amp; \forall v^{\left(i\right)}\in\mathcal{V}^{\left(i\right)}\\
+\int_{\Gamma_{\mathrm{C}}}\mu\left(u^{\left(1\right)}-u^{\left(2\right)}\right)\,\mathrm{d}s &amp; =0 &amp;  &amp; \forall\mu\in\mathcal{M}
+\end{align}\]</div><p>In more general form is to find <span>$u^{\left(i\right)}\in\mathcal{U}$</span> and <span>$\lambda\in\mathcal{M}$</span> such that</p><div>\[\begin{align}
+a\left(u^{\left(i\right)},v^{\left(i\right)}\right)+b\left(\lambda,v^{\left(i\right)}\right) &amp; =0\qquad\forall v^{\left(i\right)}\in\mathcal{V}^{\left(i\right)}\\
+b\left(\mu,u^{\left(i\right)}\right) &amp; =0\qquad\forall\mu\in\mathcal{M}
+\end{align},\]</div><p>where</p><div>\[\begin{align}
+b\left(\lambda,v^{\left(i\right)}\right) &amp; =\int_{\Gamma_{\mathrm{C}}}\lambda\left(v^{\left(1\right)}-v^{\left(2\right)}\right)\,\mathrm{d}s\\
+b\left(\mu,u^{\left(i\right)}\right) &amp; =\int_{\Gamma_{\mathrm{C}}}\mu\left(u^{\left(1\right)}-u^{\left(2\right)}\right)\,\mathrm{d}s
+\end{align}\]</div><p>After substituting interpolation polynomials to weak form we get so called mortar matrices <span>$\boldsymbol{D}$</span> and <span>$\boldsymbol{M}$</span>:</p><div>\[\begin{align}
+\boldsymbol{D}\left[j,k\right] &amp; =\int_{\Gamma_{\mathrm{c}}^{\left(1\right)}}N_{j}N_{k}^{\left(1\right)}\,\mathrm{d}s,\\
+\boldsymbol{M}\left[j,l\right] &amp; =\int_{\Gamma_{\mathrm{c}}^{\left(1\right)}}N_{j}\left(N_{l}^{\left(2\right)}\circ\chi\right)\,\mathrm{d}s,
+\end{align}\]</div><p>where <span>$\chi$</span> is mapping between contacting surfaces. Let us define some contact pair:</p><div><pre><code class="language-julia">coords = Dict(1 =&gt; [8.0, 10.0],
+              2 =&gt; [7.0, 7.0],
+              3 =&gt; [4.0, 3.0],
+              4 =&gt; [0.0, 0.0],
+              5 =&gt; [-3.0, 0.0],
+              6 =&gt; [12.0, 10.0],
+              7 =&gt; [10.0, 4.0],
+              8 =&gt; [7.0, 2.0],
+              9 =&gt; [4.0, -2.0],
+              10 =&gt; [0.0, -3.0],
+              11 =&gt; [-4.0, -3.0])
+
+elements = Dict(
+    1 =&gt; [1, 2],
+    2 =&gt; [2, 3],
+    3 =&gt; [3, 4],
+    4 =&gt; [4, 5],
+    5 =&gt; [6, 7],
+    6 =&gt; [7, 8],
+    7 =&gt; [8, 9],
+    8 =&gt; [9, 10],
+    9 =&gt; [10, 11])
+
+slave_element_ids = [1, 2, 3, 4]
+
+slave_elements = Dict(i =&gt; elements[i] for i in slave_element_ids)
+
+master_element_ids = [5, 6, 7, 8, 9]
+
+element_types = Dict(i =&gt; :Seg2 for i=1:length(elements));</code></pre><pre><code class="language-none">Dict{Int64,Symbol} with 9 entries:
+  7 =&gt; :Seg2
+  4 =&gt; :Seg2
+  9 =&gt; :Seg2
+  2 =&gt; :Seg2
+  3 =&gt; :Seg2
+  5 =&gt; :Seg2
+  8 =&gt; :Seg2
+  6 =&gt; :Seg2
+  1 =&gt; :Seg2</code></pre></div><pre><code class="language-">using PyPlot # hide
+include(&quot;plots.jl&quot;) # hide
+plot1(plot_element_normals=true) # hide
+savefig(&quot;fig1.svg&quot;); nothing # hide</code></pre><p><img src="fig1.svg" alt/></p><p>For first order elements, normal direction is not unique. For that reason some preprocessing needs to be done to calculate unique nodal normals.</p><p>Unique nodal normals can be calculated several different ways, more or less sophisticated. An easy solution is just to take average of the normals of adjacing elements connecting to node <span>$k$</span>, i.e.</p><div>\[\begin{equation}
+\boldsymbol{n}_{k}=\frac{\sum_{e=1}^{n_{k}^{\mathrm{adj}}}\boldsymbol{n}_{k}^{\left(e\right)}}{\left\Vert \sum_{e=1}^{n_{k}^{\mathrm{adj}}}\boldsymbol{n}_{k}^{\left(e\right)}\right\Vert },
+\end{equation}\]</div><p>where <span>$\boldsymbol{n}_{k}^{\left(e\right)}$</span> means the normal calculated in element <span>$e$</span> in node <span>$k$</span>, and adj means adjacing elements.</p><p>This is implemented in function <code>calculate_normals</code>:</p><pre><code class="language-">plot1(;plot_nodal_normals=true) # hide
+savefig(&quot;fig2.svg&quot;); nothing # hide
+normals = calculate_normals(slave_elements, element_types, coords)</code></pre><p><img src="fig2.svg" alt/></p><p>This package follows the idea of continuous normal field, proposed by Yang et al., where all the quantities are projected using only slave side normals. If we wish to find the projection of a slave node <span>$\boldsymbol{x}_{\mathrm{s}}$</span>, having normal vector <span>$\boldsymbol{n}_{\mathrm{s}}$</span> onto a master element with nodes <span>$\boldsymbol{x}_{\mathrm{m1}}$</span> and <span>$\boldsymbol{x}_{\mathrm{m2}}$</span>, we are solving <span>$\xi^{\left(2\right)}$</span> from the equation </p><div>\[\begin{equation}
+\left[N_{1}\left(\xi^{\left(2\right)}\right)\boldsymbol{x}_{\mathrm{m1}}+N_{2}\left(\xi^{\left(2\right)}\right)\boldsymbol{x}_{\mathrm{m2}}-\boldsymbol{x}_{\mathrm{s}}\right]\times\boldsymbol{n}_{\mathrm{s}}=\boldsymbol{0}.
+\end{equation}\]</div><p>The equation to find the projection of a master node <span>$\boldsymbol{x}_{\mathrm{m}}$</span> onto a slave element with nodes <span>$\boldsymbol{x}_{\mathrm{s1}}$</span> and <span>$\boldsymbol{x}_{\mathrm{s2}}$</span> and normals <span>$\boldsymbol{n}_{\mathrm{s1}}$</span> and <span>$\boldsymbol{n}_{\mathrm{s1}}$</span> is </p><div>\[\begin{equation}
+\left[N_{1}\left(\xi^{\left(1\right)}\right)\boldsymbol{x}_{\mathrm{s1}}+N_{2}\left(\xi^{\left(1\right)}\right)\boldsymbol{x}_{\mathrm{s2}}-\boldsymbol{x}_{\mathrm{m}}\right]\times\left[N_{1}\left(\xi^{\left(1\right)}\right)\boldsymbol{n}_{s1}+N_{2}\left(\xi^{\left(1\right)}\right)\boldsymbol{n}_{\mathrm{s2}}\right]=\boldsymbol{0},
+\end{equation}\]</div><p>where <span>$\xi^{\left(1\right)}$</span> is the unknown parameter. First equation is linear and second is quadratic (in general). Second equation is also linear if <span>$\boldsymbol{n}_{\mathrm{s1}}=\boldsymbol{n}_{\mathrm{s2}}$</span>.</p><p>These equations are solved in function <code>project_from_master_to_slave</code> and <code>project_from_slave_to_master</code>. They are used in function <code>calculate_segments</code>, which is used to calculate segmentation of interface.</p><pre><code class="language-">plot1(;plot_segmentation=true) # hide
+savefig(&quot;fig3.svg&quot;); nothing # hide
+segmentation = calculate_segments(slave_element_ids, master_element_ids,
+                                  elements, element_types, coords, normals)
+</code></pre><p><img src="fig3.svg" alt/></p><p>After segmentation is calculated, it&#39;s possible to integrate over non-conforming surface to calculate mortar matrices <span>$\boldsymbol{D}$</span> and <span>$\boldsymbol{M}$</span> or <span>$\boldsymbol{P}=\boldsymbol{D}^{-1}\boldsymbol{M}$</span>.  Calculation projection matrix <span>$\boldsymbol{P}$</span> is implemented as function <code>calculate_mortar_assembly</code>:</p><pre><code class="language-">P = calculate_mortar_assembly(elements, element_types, coords,
+                              slave_element_ids, master_element_ids)</code></pre><p>This last command combines everything above to single command to calculate projection matrix needed for finite element codes.</p><h1><a class="nav-anchor" id="References-1" href="#References-1">References</a></h1><ul><li><p>Wikipedia contributors. &quot;Mortar methods.&quot; Wikipedia, The Free Encyclopedia. Wikipedia, The Free Encyclopedia.</p></li><li><p>Maday, Yvon, Cathy Mavriplis, and Anthony Patera. &quot;Nonconforming mortar element methods: Application to spectral discretizations.&quot; (1988).</p></li><li><p>Yang, Bin, Tod A. Laursen, and Xiaonong Meng. &quot;Two dimensional mortar contact methods for large deformation frictional sliding.&quot; International journal for numerical methods in engineering 62.9 (2005): 1183-1225.</p></li><li><p>Yang, Bin, and Tod A. Laursen. &quot;A contact searching algorithm including bounding volume trees applied to finite sliding mortar formulations.&quot; Computational Mechanics 41.2 (2008): 189-205.</p></li><li><p>Wohlmuth, Barbara I. &quot;A mortar finite element method using dual spaces for the Lagrange multiplier.&quot; SIAM journal on numerical analysis 38.3 (2000): 989-1012.</p></li></ul><footer><hr/><a class="previous" href="index.html"><span class="direction">Previous</span><span class="title">Introduction</span></a><a class="next" href="api.html"><span class="direction">Next</span><span class="title">API</span></a></footer></article></body></html>

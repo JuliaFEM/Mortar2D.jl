@@ -3,7 +3,6 @@ os:
     - linux
 julia:
     - 0.6
-    - nightly
 before_script:
     - julia --color=yes -e 'Pkg.clone("https://github.com/JuliaFEM/PkgTestSuite.jl.git")'
     - julia --color=yes -e 'using PkgTestSuite; init()'

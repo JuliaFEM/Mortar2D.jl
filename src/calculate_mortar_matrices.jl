@@ -7,21 +7,61 @@ const seg_integration_points = Dict(
           (5.0/9.0, +sqrt(3.0/5.0))))
 
 """
-Given segmentation, calculate mortar matrices De and Me.
+    calculate_mortar_matrices(slave_element_id::Int,
+                              elements::Dict{Int, Vector{Int}},
+                              element_types::Dict{Int, Symbol},
+                              coords::Dict{Int, Vector{Float64}},
+                              normals::Dict{Int, Vector{Float64}},
+                              segmentation:MortarSegmentation)
+
+Calculate mortar matrices De and Me for slave element.
+
+# Example
+
+```jldoctest
+elements = Dict(
+    1 => [1, 2],
+    2 => [3, 4])
+element_types = Dict(
+    1 => :Seg2,
+    2 => :Seg2)
+coords = Dict(
+    1 => [1.0, 2.0],
+    2 => [3.0, 2.0],
+    3 => [2.0, 2.0],
+    4 => [0.0, 2.0])
+normals = Dict(
+    1 => [0.0, -1.0],
+    2 => [0.0, -1.0])
+segmentation = Dict(1 => [(2, [-1.0, 0.0])])
+De, Me = calculate_mortar_matrices(1, elements, element_types,
+                                   coords, normals, segmentation)
+
+# output
+
+([0.583333 0.166667; 0.166667 0.0833333], Dict(2=>[0.541667 0.208333; 0.208333 0.0416667]))
+
+```
+
 """
-function calculate_mortar_matrices(sid, mids, elements, element_types, coords, normals, segmentation)
-    @assert element_types[sid] == :Seg2
+function calculate_mortar_matrices(slave_element_id::Int,
+                                   elements::Dict{Int, Vector{Int}},
+                                   element_types::Dict{Int, Symbol},
+                                   coords::Dict{Int, Vector{Float64}},
+                                   normals::Dict{Int, Vector{Float64}},
+                                   segmentation::MortarSegmentation)
+    @assert element_types[slave_element_id] == :Seg2
     # Initialization + calculate jacobian
     De = zeros(2, 2)
-    Me = Dict()
-    scon = elements[sid]
+    Me = Dict{Int, Matrix{Float64}}()
+    scon = elements[slave_element_id]
     xs1 = coords[scon[1]]
     xs2 = coords[scon[2]]
     ns1 = normals[scon[1]]
     ns2 = normals[scon[2]]
     J = norm(xs2-xs1)/2.0
     # 1. calculate De
-    for (mid, (xi1, xi2)) in segmentation[sid]
+    for (mid, (xi1, xi2)) in segmentation[slave_element_id]
         s = abs(xi2-xi1)/2.0
         for (w, ip) in seg_integration_points[3]
             xi_s = (1-ip)/2*xi1 + (1+ip)/2*xi2
@@ -30,7 +70,7 @@ function calculate_mortar_matrices(sid, mids, elements, element_types, coords, n
         end
     end
     # 2. calculate Me
-    for (mid, (xi1, xi2)) in segmentation[sid]
+    for (mid, (xi1, xi2)) in segmentation[slave_element_id]
         @assert element_types[mid] == :Seg2
         Me[mid] = zeros(2, 2)
         mcon = elements[mid]

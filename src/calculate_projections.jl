@@ -2,27 +2,30 @@
 # License is MIT: see https://github.com/JuliaFEM/Mortar2D.jl/blob/master/LICENSE
 
 """
+    project_from_slave_to_master(Val{:Seg2}, xs, ns, xm1, xm2)
+
 Find the projection of a slave node `xs`, having normal vector `ns`, onto master
-elements with nodes (xm1, xm2).
-
-## Mathematics
-
-## References
-
-- Yang2005
+elements with nodes (`xm1`, `xm2`).
 
 """
-function project_from_slave_to_master{T<:Number}(::Type{Val{:Seg2}}, xs::Vector{T}, ns::Vector{T}, xm1::Vector{T}, xm2::Vector{T})
+function project_from_slave_to_master{T<:Number}(::Type{Val{:Seg2}}, xs::Vector{T},
+                                                 ns::Vector{T}, xm1::Vector{T},
+                                                 xm2::Vector{T})
     nom = ns[1]*(xm1[2] + xm2[2] - 2*xs[2]) - ns[2]*(xm1[1] + xm2[1] - 2*xs[1])
     denom = ns[1]*(xm1[2] - xm2[2]) + ns[2]*(xm2[1] - xm1[1])
     return nom/denom
 end
 
 """
+    project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)
+
 Find the projection of a master node `xm`, to the slave surface with nodes
-(xs1, xs2), in direction of slave surface normal defined by (ns1, ns2).
+(`xs1`, `xs2`), in direction of slave surface normal defined by (`ns1`, `ns2`).
+
 """
-function project_from_master_to_slave{T<:Number}(::Type{Val{:Seg2}}, xm::Vector{T}, xs1::Vector{T}, xs2::Vector{T}, ns1::Vector{T}, ns2::Vector{T})
+function project_from_master_to_slave{T<:Number}(::Type{Val{:Seg2}}, xm::Vector{T},
+                                                 xs1::Vector{T}, xs2::Vector{T},
+                                                 ns1::Vector{T}, ns2::Vector{T})
 
     # Special case when normal is constant. Then we have
     # unique solution and linear equation to solve.

@@ -14,8 +14,8 @@ using Mortar2D: calculate_mortar_assembly
     Em = Dict(i => [i, i+1]+1 for i=ns:ns+nm-2)
     element_types = Dict(i => :Seg2 for i=1:(ns+nm))
 
-    slave_element_ids = keys(Es)
-    master_element_ids = keys(Em)
+    slave_element_ids = collect(keys(Es))
+    master_element_ids = collect(keys(Em))
     elements = merge(Es, Em)
     coords = merge(Xs, Xm)
 

@@ -1,5 +1,10 @@
 # API documentation
 
+## Index
+
+```@index
+```
+
 ```@meta
 DocTestSetup = quote
     using Mortar2D
@@ -14,10 +19,5 @@ Mortar2D.project_from_slave_to_master
 Mortar2D.calculate_segments
 Mortar2D.calculate_mortar_matrices
 Mortar2D.calculate_mortar_assembly
-```
-
-## Index
-
-```@index
 ```
 

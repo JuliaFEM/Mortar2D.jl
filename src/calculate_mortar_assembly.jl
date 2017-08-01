@@ -1,9 +1,27 @@
 # This file is a part of JuliaFEM.
 # License is MIT: see https://github.com/JuliaFEM/Mortar2D.jl/blob/master/LICENSE
 
-""" Given data, calculate projection matrix `P`. """
-function calculate_mortar_assembly(elements, element_types, coords,
-                                   slave_element_ids, master_element_ids)
+"""
+    calculate_mortar_assembly(elements::Dict{Int, Vector{Int}},
+                              element_types::Dict{Int, Symbol},
+                              coords::Dict{Int, Vector{Float64}},
+                              slave_element_ids::Vector{Int},
+                              master_element_ids::Vector{Int})
+
+Given data, calculate projection matrix `P`. This is the main function of
+package.
+
+Matrix ``P`` is defined as a projection between slave and master surface,
+i.e.
+```math
+    D u_s = M u_m \\Rightarrow u_s = D^{-1} M u_m = P u_m.
+```
+"""
+function calculate_mortar_assembly(elements::Dict{Int, Vector{Int}},
+                                   element_types::Dict{Int, Symbol},
+                                   coords::Dict{Int, Vector{Float64}},
+                                   slave_element_ids::Vector{Int},
+                                   master_element_ids::Vector{Int})
     S = Int[]
     M = Int[]
     for sid in slave_element_ids
@@ -16,7 +34,6 @@ function calculate_mortar_assembly(elements, element_types, coords,
     M = sort(unique(M))
     ns = length(S)
     nm = length(M)
-    println("$ns slave nodes, $nm master nodes")
     normals = calculate_normals(elements, element_types, coords)
     segmentation = calculate_segments(slave_element_ids, master_element_ids,
                                       elements, element_types, coords, normals)
@@ -28,7 +45,7 @@ function calculate_mortar_assembly(elements, element_types, coords,
     M_V = Float64[]
     for sid in slave_element_ids
         mids = [mid for (mid, xi) in segmentation[sid]]
-        De, Me = calculate_mortar_matrices(sid, mids, elements, element_types,
+        De, Me = calculate_mortar_matrices(sid, elements, element_types,
                                            coords, normals, segmentation)
         for (i,I) in enumerate(elements[sid])
             for (j,J) in enumerate(elements[sid])

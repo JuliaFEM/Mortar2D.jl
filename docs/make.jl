@@ -3,10 +3,16 @@
 
 using Documenter, Mortar2D
 
+installed_packages = Pkg.installed()
+if !haskey(installed_packages, "PyPlot")
+    Pkg.add("PyPlot")
+end
+
 makedocs(modules=[Mortar2D],
          format = :html,
          sitename = "Mortar2D",
          pages = [
                   "Introduction" => "index.md",
-                  "API" => "api.md",
+                  "Theory" => "theory.md",
+                  "API" => "api.md"
                  ])

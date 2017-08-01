@@ -20,7 +20,7 @@ using Mortar2D: calculate_mortar_matrices
         1 => [0.0, -1.0],
         2 => [0.0, -1.0])
     segmentation = Dict(1 => [(2, [-1.0, 0.0])])
-    De, Me = calculate_mortar_matrices(1, [2], elements, element_types,
+    De, Me = calculate_mortar_matrices(1, elements, element_types,
                                        coords, normals, segmentation)
     De_expected = 1/24*[14 4; 4 2]
     Me_expected = 1/24*[13 5; 5 1]

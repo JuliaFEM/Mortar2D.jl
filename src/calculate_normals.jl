@@ -10,7 +10,11 @@ Given elements, element types and node locations, calculate nodal normals by
 first calculating normal directions for each element and then averaging them
 in nodes. As a result we get unique normal direction defined to each node.
 
+# Notes
+Only linear elements supported.
+
 # Example
+
 ```jldoctest
 X = Dict(1 => [7.0, 7.0], 2 => [4.0, 3.0], 3 => [0.0, 0.0])
 elements = Dict(1 => [1, 2], 2 => [2, 3])

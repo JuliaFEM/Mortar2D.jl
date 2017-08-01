@@ -2,7 +2,7 @@
 
 ![Typical 2d segmentation](figs/contact_segmentation.png)
 ```@contents
-Pages = ["index.md", "api.md"]
+Pages = ["index.md", "theory.md", "api.md"]
 ```
 
 Mortar2D.jl is a julia package to calculate discrete projections between

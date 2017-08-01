@@ -6,5 +6,5 @@ include("calculate_normals.jl")
 include("calculate_projections.jl")
 include("calculate_segments.jl")
 include("calculate_mortar_matrices.jl")
-include("calculate_assembly.jl")
+include("calculate_mortar_assembly.jl")
 end

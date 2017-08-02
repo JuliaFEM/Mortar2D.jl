@@ -45,9 +45,8 @@ function project_from_master_to_slave{T<:Number}(::Type{Val{:Seg2}}, xm::Vector{
     c = nom_c / denom_c
     d = b^2 - 4*a*c
     if d < 0
-        warn("Mortar2D.calculate_projections(): negative discriminant")
+        warn("Mortar2D.calculate_projections(): negative discriminant $d")
         warn("xm = $xm, xs1 = $xs1, xs2 = $xs2, ns1 = $ns1, ns2 = $ns2")
-        error("negative discriminant d=$d when calculating projection")
     end
     sols = [-b + sqrt(d), -b - sqrt(d)]/(2.0*a)
     return sols[indmin(abs.(sols))]

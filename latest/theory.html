@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Theory · Mortar2D</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link href="assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>Mortar2D</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" action="search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="index.html">Introduction</a></li><li class="current"><a class="toctext" href="theory.html">Theory</a><ul class="internal"><li class="toplevel"><a class="toctext" href="#References-1">References</a></li></ul></li><li><a class="toctext" href="api.html">API</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href="theory.html">Theory</a></li></ul><a class="edit-page" href="https://github.com/JuliaFEM/Mortar2D.jl/tree/a27fa6624682253bbcadf08881a4faca4f697ac9/docs/src/theory.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Theory</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Theory-1" href="#Theory-1">Theory</a></h1><p>Let us consider the simple following simple Laplace problem in the domain <span>$\Omega=\left\{ \left(x,y\right)\in\mathbb{R}^{2}|0\leq x,y\leq2\right\}$</span>.</p><p><img src="figs/poisson_problem.png" alt/></p><p>The strong form of the problem is </p><div>\[\begin{align}
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Theory · Mortar2D</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link href="assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>Mortar2D</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" action="search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="index.html">Introduction</a></li><li class="current"><a class="toctext" href="theory.html">Theory</a><ul class="internal"><li class="toplevel"><a class="toctext" href="#References-1">References</a></li></ul></li><li><a class="toctext" href="api.html">API</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href="theory.html">Theory</a></li></ul><a class="edit-page" href="https://github.com/JuliaFEM/Mortar2D.jl/tree/cc0ba70f0c0ece3af19292be4cef84b96bb395ea/docs/src/theory.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Theory</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Theory-1" href="#Theory-1">Theory</a></h1><p>Let us consider the simple following simple Laplace problem in the domain <span>$\Omega=\left\{ \left(x,y\right)\in\mathbb{R}^{2}|0\leq x,y\leq2\right\}$</span>.</p><p><img src="figs/poisson_problem.png" alt/></p><p>The strong form of the problem is </p><div>\[\begin{align}
 -\Delta u^{\left(i\right)} &amp; =0\qquad\text{in }\Omega^{\left(i\right)},i=1,2\\
 u^{\left(1\right)} &amp; =0\qquad\text{on }\Gamma_{\mathrm{D}}^{\left(1\right)}\\
 u^{\left(1\right)}-u^{\left(2\right)} &amp; =0\qquad\text{on }\Gamma_{\mathrm{C}}\\
@@ -70,21 +70,34 @@ element_types = Dict(i =&gt; :Seg2 for i=1:length(elements));</code></pre><pre><
   4 =&gt; Tuple{Int64,Array{Float64,1}}[(8, [-1.0, -0.504971]), (9, [-0.504971, 1.…
   2 =&gt; Tuple{Int64,Array{Float64,1}}[(5, [-1.0, -0.592152]), (6, [-0.592152, 0.…
   3 =&gt; Tuple{Int64,Array{Float64,1}}[(7, [-1.0, 0.0403503]), (8, [0.0403503, 1.…
-  1 =&gt; Tuple{Int64,Array{Float64,1}}[(5, [-1.0, 1.0])]</code></pre></div><p><img src="fig3.svg" alt/></p><p>After segmentation is calculated, it&#39;s possible to integrate over non-conforming surface to calculate mortar matrices <span>$\boldsymbol{D}$</span> and <span>$\boldsymbol{M}$</span> or <span>$\boldsymbol{P}=\boldsymbol{D}^{-1}\boldsymbol{M}$</span>.  Calculation projection matrix <span>$\boldsymbol{P}$</span> is implemented as function <code>calculate_mortar_assembly</code>:</p><div><pre><code class="language-julia">P = calculate_mortar_assembly(elements, element_types, coords,
-                              slave_element_ids, master_element_ids)</code></pre><pre><code class="language-none">5×6 SparseMatrixCSC{Float64,Int64} with 30 stored entries:
-  [1, 1]  =  0.844367
-  [2, 1]  =  0.114531
-  [3, 1]  =  -0.0290057
-  [4, 1]  =  0.010002
-  [5, 1]  =  -0.00500098
-  [1, 2]  =  0.124777
-  [2, 2]  =  0.947181
+  1 =&gt; Tuple{Int64,Array{Float64,1}}[(5, [-1.0, 1.0])]</code></pre></div><p><img src="fig3.svg" alt/></p><p>After segmentation is calculated, it&#39;s possible to integrate over non-conforming surface to calculate mortar matrices <span>$\boldsymbol{D}$</span> and <span>$\boldsymbol{M}$</span> or <span>$\boldsymbol{P}=\boldsymbol{D}^{-1}\boldsymbol{M}$</span>.  Calculation projection matrix <span>$\boldsymbol{P}$</span> is implemented as function <code>calculate_mortar_assembly</code>:</p><div><pre><code class="language-julia">s, m, D, M = calculate_mortar_assembly(elements, element_types, coords,
+                                       slave_element_ids, master_element_ids)</code></pre><pre><code class="language-none">([1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11],
+  [1, 1]  =  1.05409
+  [2, 1]  =  0.527046
+  [1, 2]  =  0.527046
+  [2, 2]  =  2.72076
+  [3, 2]  =  0.833333
+  [2, 3]  =  0.833333
+  [3, 3]  =  3.33333
+  [4, 3]  =  0.833333
+  [3, 4]  =  0.833333
+  [4, 4]  =  2.66667
+  [5, 4]  =  0.5
+  [4, 5]  =  0.5
+  [5, 5]  =  1.0,
+  [1 ,  6]  =  0.950404
+  [2 ,  6]  =  0.73246
+  [3 ,  6]  =  0.00709177
+  [1 ,  7]  =  0.630735
+  [2 ,  7]  =  2.59715
+  [3 ,  7]  =  0.622407
+  [2 ,  8]  =  0.737632
   ⋮
-  [3, 5]  =  -0.140732
-  [4, 5]  =  0.699888
-  [5, 5]  =  0.507009
-  [1, 6]  =  0.00221293
-  [2, 6]  =  -0.00442586
-  [3, 6]  =  0.0130504
-  [4, 6]  =  -0.0477759
-  [5, 6]  =  0.659808</code></pre></div><p>This last command combines everything above to single command to calculate projection matrix needed for finite element codes.</p><h1><a class="nav-anchor" id="References-1" href="#References-1">References</a></h1><ul><li><p>Wikipedia contributors. &quot;Mortar methods.&quot; Wikipedia, The Free Encyclopedia. Wikipedia, The Free Encyclopedia.</p></li><li><p>Maday, Yvon, Cathy Mavriplis, and Anthony Patera. &quot;Nonconforming mortar element methods: Application to spectral discretizations.&quot; (1988).</p></li><li><p>Yang, Bin, Tod A. Laursen, and Xiaonong Meng. &quot;Two dimensional mortar contact methods for large deformation frictional sliding.&quot; International journal for numerical methods in engineering 62.9 (2005): 1183-1225.</p></li><li><p>Yang, Bin, and Tod A. Laursen. &quot;A contact searching algorithm including bounding volume trees applied to finite sliding mortar formulations.&quot; Computational Mechanics 41.2 (2008): 189-205.</p></li><li><p>Wohlmuth, Barbara I. &quot;A mortar finite element method using dual spaces for the Lagrange multiplier.&quot; SIAM journal on numerical analysis 38.3 (2000): 989-1012.</p></li></ul><footer><hr/><a class="previous" href="index.html"><span class="direction">Previous</span><span class="title">Introduction</span></a><a class="next" href="api.html"><span class="direction">Next</span><span class="title">API</span></a></footer></article></body></html>
+  [3 ,  9]  =  1.71965
+  [4 ,  9]  =  1.61681
+  [5 ,  9]  =  0.00712785
+  [3 , 10]  =  0.153905
+  [4 , 10]  =  2.00259
+  [5 , 10]  =  0.856952
+  [4 , 11]  =  0.213377
+  [5 , 11]  =  0.63592)</code></pre></div><p>This last command combines everything above to single command to calculate projection matrix needed for finite element codes.</p><h1><a class="nav-anchor" id="References-1" href="#References-1">References</a></h1><ul><li><p>Wikipedia contributors. &quot;Mortar methods.&quot; Wikipedia, The Free Encyclopedia. Wikipedia, The Free Encyclopedia.</p></li><li><p>Maday, Yvon, Cathy Mavriplis, and Anthony Patera. &quot;Nonconforming mortar element methods: Application to spectral discretizations.&quot; (1988).</p></li><li><p>Yang, Bin, Tod A. Laursen, and Xiaonong Meng. &quot;Two dimensional mortar contact methods for large deformation frictional sliding.&quot; International journal for numerical methods in engineering 62.9 (2005): 1183-1225.</p></li><li><p>Yang, Bin, and Tod A. Laursen. &quot;A contact searching algorithm including bounding volume trees applied to finite sliding mortar formulations.&quot; Computational Mechanics 41.2 (2008): 189-205.</p></li><li><p>Wohlmuth, Barbara I. &quot;A mortar finite element method using dual spaces for the Lagrange multiplier.&quot; SIAM journal on numerical analysis 38.3 (2000): 989-1012.</p></li></ul><footer><hr/><a class="previous" href="index.html"><span class="direction">Previous</span><span class="title">Introduction</span></a><a class="next" href="api.html"><span class="direction">Next</span><span class="title">API</span></a></footer></article></body></html>

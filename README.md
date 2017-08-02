@@ -25,4 +25,51 @@ Testing package can be done using `Pkg.test`, i.e.
 julia> Pkg.test("Mortar2D")
 ```
 
-Probably the easiest way to test the functionality of package is to use [JuliaBox](https://juliabox.com/).
+Probably the easiest way to test the functionality of package is to
+use [JuliaBox](https://juliabox.com/).
+
+## Usage example
+
+Let us calculate projection matrices D and M for the following problem:
+
+![](docs/src/figs/poisson_problem_discretized.png)
+
+Problem setup:
+
+```julia
+Xs = Dict(1 => [0.0, 1.0], 2 => [5/4, 1.0], 3 => [2.0, 1.0])
+Xm = Dict(4 => [0.0, 1.0], 5 => [1.0, 1.0], 6 => [2.0, 1.0])
+coords = merge(Xm , Xs)
+Es = Dict(1 => [1, 2], 2 => [2, 3])
+Em = Dict(3 => [4, 5], 4 => [5, 6])
+elements = merge(Es, Em)
+element_types = Dict(1 => :Seg2, 2 => :Seg2, 3 => :Seg2, 4 => :Seg2)
+slave_element_ids = [1, 2]
+master_element_ids = [3, 4]
+```
+
+Calculate projection matrices D and M
+
+```julia
+s, m, D, M = calculate_mortar_assembly(
+    elements, element_types, coords,
+    slave_element_ids, master_element_ids)
+```
+
+According to theory, the interface should transfer constant without any
+error. Let's test that:
+
+```julia
+u_m = ones(3)
+u_s = D[s,s] \ (M[s,m]*um)
+
+# output
+
+3-element Array{Float64,1}:
+ 1.0
+ 1.0
+ 1.0
+```
+
+The rest of the story can be read from the [documentation](https://juliafem.github.io/Mortar2D.jl/latest/).
+There's also brief review to the theory behind non-conforming finite element meshes.

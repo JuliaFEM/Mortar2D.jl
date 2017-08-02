@@ -7,4 +7,5 @@ include("calculate_projections.jl")
 include("calculate_segments.jl")
 include("calculate_mortar_matrices.jl")
 include("calculate_mortar_assembly.jl")
+export calculate_mortar_assembly
 end

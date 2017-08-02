@@ -8,14 +8,17 @@
                               slave_element_ids::Vector{Int},
                               master_element_ids::Vector{Int})
 
-Given data, calculate projection matrix `P`. This is the main function of
-package.
+Given data, calculate projection matrices `D` and `M`. This is the main
+function of package. Relation between matrices is ``D u_s = M u_m``, where
+``u_s`` is slave nodes and ``u_m`` master nodes.
 
-Matrix ``P`` is defined as a projection between slave and master surface,
-i.e.
-```math
-    D u_s = M u_m \\Rightarrow u_s = D^{-1} M u_m = P u_m.
+# Example
+
+```julia
+s, m, D, M = calculate_mortar_assembly(elements, element_types, coords,
+                                       slave_element_ids, master_element_ids)
 ```
+
 """
 function calculate_mortar_assembly(elements::Dict{Int, Vector{Int}},
                                    element_types::Dict{Int, Symbol},
@@ -65,11 +68,8 @@ function calculate_mortar_assembly(elements::Dict{Int, Vector{Int}},
         end
     end
 
-    D = sparse(D_I, D_J, D_V)
-    Df = cholfact(1/2*(D+D')[S,S])
-
-    M_ = sparse(M_I, M_J, M_V)
-    P =  Df \ M_[S,M]
-    SparseArrays.droptol!(P, 1.0e-12)
-    return P
+    # return global matrices + slave and master dofs
+    Dg = sparse(D_I, D_J, D_V)
+    Mg = sparse(M_I, M_J, M_V)
+    return S, M, Dg, Mg
 end

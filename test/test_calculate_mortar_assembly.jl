@@ -19,18 +19,21 @@ using Mortar2D: calculate_mortar_assembly
     elements = merge(Es, Em)
     coords = merge(Xs, Xm)
 
-    P = calculate_mortar_assembly(elements, element_types, coords,
-                                  slave_element_ids, master_element_ids)
+    s, m, D, M = calculate_mortar_assembly(elements,
+                                           element_types,
+                                           coords,
+                                           slave_element_ids,
+                                           master_element_ids)
 
     # test case 1, constant pressure load
     um = ones(nm)
-    us = P*um
+    us = D[s,s] \ (M[s,m]*um)
     us_expected = ones(ns)
     @test isapprox(us, us_expected)
 
     # test case 2, linear load
     um = linspace(0, 1, nm)
-    us = P*um
+    us = D[s,s] \ (M[s,m]*um)
     us_expected = linspace(0, 1, ns)
     @test isapprox(us, us_expected)
 end

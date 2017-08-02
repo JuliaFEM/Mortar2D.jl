@@ -151,8 +151,8 @@ and ``\boldsymbol{M}`` or ``\boldsymbol{P}=\boldsymbol{D}^{-1}\boldsymbol{M}``.
 Calculation projection matrix ``\boldsymbol{P}`` is implemented as function `calculate_mortar_assembly`:
 
 ```@example 0
-P = calculate_mortar_assembly(elements, element_types, coords,
-                              slave_element_ids, master_element_ids)
+s, m, D, M = calculate_mortar_assembly(elements, element_types, coords,
+                                       slave_element_ids, master_element_ids)
 ```
 
 This last command combines everything above to single command to calculate

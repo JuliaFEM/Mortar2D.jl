@@ -85,7 +85,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "Mortar2D.project_from_master_to_slave",
     "category": "Function",
-    "text": "project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)\n\nFind the projection of a master node xm, to the slave surface with nodes (xs1, xs2), in direction of slave surface normal defined by (ns1, ns2).\n\n\n\n"
+    "text": "project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)\n\nFind the projection of a master node xm, to the slave surface with nodes (xs1, xs2), in direction of slave surface normal defined by (ns1, ns2). Returns slave element dimensionless parameter, that is, to find coordinates in slave side:\n\nxs = 1/2*(1-xi)*xs1 + 1/2*(1+xi)*xs2\n\nExample\n\nxm = [4.0, -2.0]\nxs1 = [0.0, 0.0]\nxs2 = [4.0, 3.0]\nns1 = [3.0/5.0, -4.0/5.0]\nns2 = sqrt(2)/2*[1, -1]\nxi1 = project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)\nround(xi1, 6)\n\n# output\n\n-0.281575\n\n\n\n"
 },
 
 {
@@ -93,7 +93,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "Mortar2D.project_from_slave_to_master",
     "category": "Function",
-    "text": "project_from_slave_to_master(Val{:Seg2}, xs, ns, xm1, xm2)\n\nFind the projection of a slave node xs, having normal vector ns, onto master elements with nodes (xm1, xm2).\n\n\n\n"
+    "text": "project_from_slave_to_master(Val{:Seg2}, xs, ns, xm1, xm2)\n\nFind the projection of a slave node xs, having normal vector ns, onto master elements with nodes (xm1, xm2). Returns master element dimensionless parameter xi, that is,\n\nxm = 1/2*(1-xi)*xm1 + 1/2*(1+xi)*xm2\n\nExample\n\nxm1 = [7.0, 2.0]\nxm2 = [4.0, -2.0]\nxs = [0.0, 0.0]\nns = [3.0/5.0, -4.0/5.0]\nxi2 = project_from_slave_to_master(Val{:Seg2}, xs, ns, xm1, xm2)\nround(xi2, 6)\n\n# output\n\n1.833333\n\n\n\n"
 },
 
 {
@@ -117,7 +117,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "Mortar2D.calculate_mortar_assembly",
     "category": "Function",
-    "text": "calculate_mortar_assembly(elements::Dict{Int, Vector{Int}},\n                          element_types::Dict{Int, Symbol},\n                          coords::Dict{Int, Vector{Float64}},\n                          slave_element_ids::Vector{Int},\n                          master_element_ids::Vector{Int})\n\nGiven data, calculate projection matrices D and M. This is the main function of package. Relation between matrices is D u_s = M u_m, where u_s is slave nodes and u_m master nodes.\n\nExample\n\ns, m, D, M = calculate_mortar_assembly(elements, element_types, coords,\n                                       slave_element_ids, master_element_ids)\n\n\n\n"
+    "text": "calculate_mortar_assembly(elements::Dict{Int, Vector{Int}},\n                          element_types::Dict{Int, Symbol},\n                          coords::Dict{Int, Vector{Float64}},\n                          slave_element_ids::Vector{Int},\n                          master_element_ids::Vector{Int})\n\nGiven data, calculate projection matrices D and M. This is the main function of package. Relation between matrices is D u_s = M u_m, where u_s is slave nodes and u_m master nodes.\n\nExample\n\nCalculate mortar matrices for simple problem in README.md\n\nXs = Dict(1 => [0.0, 1.0], 2 => [5/4, 1.0], 3 => [2.0, 1.0])\nXm = Dict(4 => [0.0, 1.0], 5 => [1.0, 1.0], 6 => [2.0, 1.0])\ncoords = merge(Xm , Xs)\nEs = Dict(1 => [1, 2], 2 => [2, 3])\nEm = Dict(3 => [4, 5], 4 => [5, 6])\nelements = merge(Es, Em)\nelement_types = Dict(1 => :Seg2, 2 => :Seg2, 3 => :Seg2, 4 => :Seg2)\nslave_element_ids = [1, 2]\nmaster_element_ids = [3, 4]\ns, m, D, M = calculate_mortar_assembly(elements, element_types, coords,\n                                       slave_element_ids, master_element_ids)\n\n# output\n\n([1, 2, 3], [4, 5, 6],\n  [1, 1]  =  0.416667\n  [2, 1]  =  0.208333\n  [1, 2]  =  0.208333\n  [2, 2]  =  0.666667\n  [3, 2]  =  0.125\n  [2, 3]  =  0.125\n  [3, 3]  =  0.25,\n  [1, 4]  =  0.366667\n  [2, 4]  =  0.133333\n  [1, 5]  =  0.25625\n  [2, 5]  =  0.65\n  [3, 5]  =  0.09375\n  [1, 6]  =  0.00208333\n  [2, 6]  =  0.216667\n  [3, 6]  =  0.28125)\n\n\ns and m contains slave and master dofs:\n\njulia> s, m\n([1, 2, 3], [4, 5, 6])\n\nD is slave side mortar matrix:\n\njulia> full(D[s,s])\n3×3 Array{Float64,2}:\n 0.416667  0.208333  0.0\n 0.208333  0.666667  0.125\n 0.0       0.125     0.25\n\nM is master side mortar matrix:\n\njulia> full(M[s,m])\n3×3 Array{Float64,2}:\n 0.366667  0.25625  0.00208333\n 0.133333  0.65     0.216667\n 0.0       0.09375  0.28125\n\n\n\n"
 },
 
 {

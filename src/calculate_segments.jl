@@ -52,12 +52,8 @@ system is:
     x_stop = 1/2*(1-xi[2])*xs1 + 1/2*(1+xi[2])*xs2
 
 """
-function calculate_segments(slave_element_ids::Vector{Int},
-                            master_element_ids::Vector{Int},
-                            elements::Dict{Int, Vector{Int}},
-                            element_types::Dict{Int, Symbol},
-                            coords::Dict{Int, Vector{Float64}},
-                            normals::Dict{Int, Vector{Float64}})
+function calculate_segments(slave_element_ids, master_element_ids, elements,
+                            element_types, coords, normals)
     S = MortarSegmentation()
     for sid in slave_element_ids
         @assert element_types[sid] == :Seg2

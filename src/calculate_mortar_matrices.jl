@@ -44,12 +44,8 @@ De, Me = calculate_mortar_matrices(1, elements, element_types,
 ```
 
 """
-function calculate_mortar_matrices(slave_element_id::Int,
-                                   elements::Dict{Int, Vector{Int}},
-                                   element_types::Dict{Int, Symbol},
-                                   coords::Dict{Int, Vector{Float64}},
-                                   normals::Dict{Int, Vector{Float64}},
-                                   segmentation::MortarSegmentation)
+function calculate_mortar_matrices(slave_element_id, elements, element_types,
+                                   coords, normals, segmentation)
     @assert element_types[slave_element_id] == :Seg2
     # Initialization + calculate jacobian
     De = zeros(2, 2)

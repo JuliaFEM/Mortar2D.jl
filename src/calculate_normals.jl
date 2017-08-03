@@ -31,10 +31,8 @@ Dict{Int64,Array{Float64,1}} with 3 entries:
 ```
 
 """
-function calculate_normals{T<:Integer,P<:AbstractFloat}(elements::Dict{T, Vector{T}},
-                                                        element_types::Dict{T, Symbol},
-                                                        X::Dict{T, Vector{P}})
-    normals = Dict{T, Vector{P}}()
+function calculate_normals(elements, element_types, X)
+    normals = similar(X)
     for (elid, elcon) in elements
         @assert element_types[elid] == :Seg2
         d = X[elcon[2]] - X[elcon[1]]

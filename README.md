@@ -1,6 +1,6 @@
 # Mortar2D.jl
 
-[![Build Status](https://travis-ci.org/JuliaFEM/Mortar2D.jl.svg?branch=master)](https://travis-ci.org/JuliaFEM/Mortar2D.jl)[![Coverage Status](https://coveralls.io/repos/github/JuliaFEM/Mortar2D.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaFEM/Mortar2D.jl?branch=master)[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://juliafem.github.io/Mortar2D.jl/stable)[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://juliafem.github.io/Mortar2D.jl/latest)[![Issues](https://img.shields.io/github/issues/JuliaFEM/Mortar2D.jl.svg)](https://github.com/JuliaFEM/Mortar2D.jl/issues)
+[![DOI](https://zenodo.org/badge/97968807.svg)](https://zenodo.org/badge/latestdoi/97968807)[![Build Status](https://travis-ci.org/JuliaFEM/Mortar2D.jl.svg?branch=master)](https://travis-ci.org/JuliaFEM/Mortar2D.jl)[![Coverage Status](https://coveralls.io/repos/github/JuliaFEM/Mortar2D.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaFEM/Mortar2D.jl?branch=master)[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://juliafem.github.io/Mortar2D.jl/stable)[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://juliafem.github.io/Mortar2D.jl/latest)[![Issues](https://img.shields.io/github/issues/JuliaFEM/Mortar2D.jl.svg)](https://github.com/JuliaFEM/Mortar2D.jl/issues)
 
 Mortar2D.jl is a Julia package to calculate discrete projections between
 non-conforming finite element mesheds. The resulting "mortar matrices" can

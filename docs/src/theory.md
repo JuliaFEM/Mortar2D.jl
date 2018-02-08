@@ -79,16 +79,12 @@ slave_elements = Dict(i => elements[i] for i in slave_element_ids)
 
 master_element_ids = [5, 6, 7, 8, 9]
 
-element_types = Dict(i => :Seg2 for i=1:length(elements));
+element_types = Dict(i => :Seg2 for i=1:length(elements))
+
+nothing # hide
 ```
 
-```@example 0
-using PyPlot # hide
-include("plots.jl") # hide
-plot1(plot_element_normals=true) # hide
-savefig("fig1.svg"); nothing # hide
-```
-![](fig1.svg)
+![](figs/fig1.svg)
 
 For first order elements, normal direction is not unique. For that reason some preprocessing needs to be done to calculate unique nodal normals.
 
@@ -103,12 +99,15 @@ in element ``e`` in node ``k``, and adj means adjacing elements.
 
 This is implemented in function `calculate_normals`:
 
+```@setup 0
+using Mortar2D: calculate_normals, project_from_master_to_slave, project_from_slave_to_master, calculate_segments, calculate_mortar_matrices, calculate_mortar_assembly
+```
+
 ```@example 0
-plot1(;plot_nodal_normals=true) # hide
-savefig("fig2.svg"); nothing # hide
 normals = calculate_normals(slave_elements, element_types, coords)
 ```
-![](fig2.svg)
+
+![](figs/fig2.svg)
 
 This package follows the idea of continuous normal field, proposed by Yang et al., where all the quantities are projected using only slave side normals.
 If we wish to find the projection of a slave node ``\boldsymbol{x}_{\mathrm{s}}``,
@@ -137,13 +136,11 @@ also linear if ``\boldsymbol{n}_{\mathrm{s1}}=\boldsymbol{n}_{\mathrm{s2}}``.
 These equations are solved in function `project_from_master_to_slave` and `project_from_slave_to_master`. They are used in function `calculate_segments`, which is used to calculate segmentation of interface.
 
 ```@example 0
-plot1(;plot_segmentation=true) # hide
-savefig("fig3.svg"); nothing # hide
 segmentation = calculate_segments(slave_element_ids, master_element_ids,
                                   elements, element_types, coords, normals)
-
 ```
-![](fig3.svg)
+
+![](figs/fig3.svg)
 
 After segmentation is calculated, it's possible to integrate over
 non-conforming surface to calculate mortar matrices ``\boldsymbol{D}``

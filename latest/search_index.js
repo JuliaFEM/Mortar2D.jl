@@ -76,7 +76,7 @@ var documenterSearchIndex = {"docs": [
     "location": "api.html#Mortar2D.calculate_normals",
     "page": "API",
     "title": "Mortar2D.calculate_normals",
-    "category": "Function",
+    "category": "function",
     "text": "calculate_normals(elements::Dict{Int, Vector{Int}},\n                  element_types::Dict{Int, Symbol},\n                  X::Dict{Int, Vector{Float64})\n\nGiven elements, element types and node locations, calculate nodal normals by first calculating normal directions for each element and then averaging them in nodes. As a result we get unique normal direction defined to each node.\n\nNotes\n\nOnly linear elements supported.\n\nExample\n\nX = Dict(1 => [7.0, 7.0], 2 => [4.0, 3.0], 3 => [0.0, 0.0])\nelements = Dict(1 => [1, 2], 2 => [2, 3])\nelement_types = Dict(1 => :Seg2, 2 => :Seg2)\nnormals = calculate_normals(elements, element_types, X)\n\n# output\n\nDict{Int64,Array{Float64,1}} with 3 entries:\n  2 => [0.707107, -0.707107]\n  3 => [0.6, -0.8]\n  1 => [0.8, -0.6]\n\n\n\n\n"
 },
 
@@ -84,7 +84,7 @@ var documenterSearchIndex = {"docs": [
     "location": "api.html#Mortar2D.project_from_master_to_slave",
     "page": "API",
     "title": "Mortar2D.project_from_master_to_slave",
-    "category": "Function",
+    "category": "function",
     "text": "project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)\n\nFind the projection of a master node xm, to the slave surface with nodes (xs1, xs2), in direction of slave surface normal defined by (ns1, ns2). Returns slave element dimensionless parameter, that is, to find coordinates in slave side:\n\nxs = 1/2*(1-xi)*xs1 + 1/2*(1+xi)*xs2\n\nExample\n\nxm = [4.0, -2.0]\nxs1 = [0.0, 0.0]\nxs2 = [4.0, 3.0]\nns1 = [3.0/5.0, -4.0/5.0]\nns2 = sqrt(2)/2*[1, -1]\nxi1 = project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)\nround(xi1, 6)\n\n# output\n\n-0.281575\n\n\n\n"
 },
 
@@ -92,7 +92,7 @@ var documenterSearchIndex = {"docs": [
     "location": "api.html#Mortar2D.project_from_slave_to_master",
     "page": "API",
     "title": "Mortar2D.project_from_slave_to_master",
-    "category": "Function",
+    "category": "function",
     "text": "project_from_slave_to_master(Val{:Seg2}, xs, ns, xm1, xm2)\n\nFind the projection of a slave node xs, having normal vector ns, onto master elements with nodes (xm1, xm2). Returns master element dimensionless parameter xi, that is,\n\nxm = 1/2*(1-xi)*xm1 + 1/2*(1+xi)*xm2\n\nExample\n\nxm1 = [7.0, 2.0]\nxm2 = [4.0, -2.0]\nxs = [0.0, 0.0]\nns = [3.0/5.0, -4.0/5.0]\nxi2 = project_from_slave_to_master(Val{:Seg2}, xs, ns, xm1, xm2)\nround(xi2, 6)\n\n# output\n\n1.833333\n\n\n\n"
 },
 
@@ -100,7 +100,7 @@ var documenterSearchIndex = {"docs": [
     "location": "api.html#Mortar2D.calculate_segments",
     "page": "API",
     "title": "Mortar2D.calculate_segments",
-    "category": "Function",
+    "category": "function",
     "text": "calculate_segments(slave_element_ids::Vector{Int},\n                   master_element_ids::Vector{Int},\n                   elements::Dict{Int, Vector{Int}},\n                   element_types::Dict{Int, Symbol},\n                   coords::Dict{Int, Vector{Float64}},\n                   normals::Dict{Int, Vector{Float64}})\n\nGiven slave surface elements, master surface elements, nodal coordinates and normal direction on nodes of slave surface elements, calculate contact segments.\n\nReturn type is a dictionary, where key is slave element id and values is a list of master elements giving contribution to that slave elements and xi-coordinates of slave side element.\n\nExample\n\nelements = Dict(1 => [1, 2], 2 => [3, 4])\nelement_types = Dict(1 => :Seg2, 2 => :Seg2)\ncoords = Dict(\n    1 => [1.0, 2.0],\n    2 => [3.0, 2.0],\n    3 => [0.0, 2.0],\n    4 => [2.0, 2.0])\nnormals = Dict(\n    1 => [0.0, -1.0],\n    2 => [0.0, -1.0])\nslave_ids = [1]\nmaster_ids = [2]\nsegments = calculate_segments(slave_ids, master_ids, elements,\n                              element_types, coords, normals)\n\n# output\n\nDict{Int64,Array{Tuple{Int64,Array{Float64,1}},1}} with 1 entry:\n  1 => Tuple{Int64,Array{Float64,1}}[(2, [-1.0, -0.0])]\n\n\nHere, output result means that slave element #1 has segment with master element(s) #2 with dimensionless slave element coordinate xi = [-1, 0]. That is, the start and end point of projection in physical coordinate system is:\n\nx_start = 1/2*(1-xi[1])*xs1 + 1/2*(1+xi[1])*xs2\nx_stop = 1/2*(1-xi[2])*xs1 + 1/2*(1+xi[2])*xs2\n\n\n\n"
 },
 
@@ -108,7 +108,7 @@ var documenterSearchIndex = {"docs": [
     "location": "api.html#Mortar2D.calculate_mortar_matrices",
     "page": "API",
     "title": "Mortar2D.calculate_mortar_matrices",
-    "category": "Function",
+    "category": "function",
     "text": "calculate_mortar_matrices(slave_element_id::Int,\n                          elements::Dict{Int, Vector{Int}},\n                          element_types::Dict{Int, Symbol},\n                          coords::Dict{Int, Vector{Float64}},\n                          normals::Dict{Int, Vector{Float64}},\n                          segmentation:MortarSegmentation)\n\nCalculate mortar matrices De and Me for slave element.\n\nExample\n\nelements = Dict(\n    1 => [1, 2],\n    2 => [3, 4])\nelement_types = Dict(\n    1 => :Seg2,\n    2 => :Seg2)\ncoords = Dict(\n    1 => [1.0, 2.0],\n    2 => [3.0, 2.0],\n    3 => [2.0, 2.0],\n    4 => [0.0, 2.0])\nnormals = Dict(\n    1 => [0.0, -1.0],\n    2 => [0.0, -1.0])\nsegmentation = Dict(1 => [(2, [-1.0, 0.0])])\nDe, Me = calculate_mortar_matrices(1, elements, element_types,\n                                   coords, normals, segmentation)\n\n# output\n\n([0.583333 0.166667; 0.166667 0.0833333], Dict(2=>[0.541667 0.208333; 0.208333 0.0416667]))\n\n\n\n\n"
 },
 
@@ -116,7 +116,7 @@ var documenterSearchIndex = {"docs": [
     "location": "api.html#Mortar2D.calculate_mortar_assembly",
     "page": "API",
     "title": "Mortar2D.calculate_mortar_assembly",
-    "category": "Function",
+    "category": "function",
     "text": "calculate_mortar_assembly(elements::Dict{Int, Vector{Int}},\n                          element_types::Dict{Int, Symbol},\n                          coords::Dict{Int, Vector{Float64}},\n                          slave_element_ids::Vector{Int},\n                          master_element_ids::Vector{Int})\n\nGiven data, calculate projection matrices D and M. This is the main function of package. Relation between matrices is D u_s = M u_m, where u_s is slave nodes and u_m master nodes.\n\nExample\n\nCalculate mortar matrices for simple problem in README.md\n\nXs = Dict(1 => [0.0, 1.0], 2 => [5/4, 1.0], 3 => [2.0, 1.0])\nXm = Dict(4 => [0.0, 1.0], 5 => [1.0, 1.0], 6 => [2.0, 1.0])\ncoords = merge(Xm , Xs)\nEs = Dict(1 => [1, 2], 2 => [2, 3])\nEm = Dict(3 => [4, 5], 4 => [5, 6])\nelements = merge(Es, Em)\nelement_types = Dict(1 => :Seg2, 2 => :Seg2, 3 => :Seg2, 4 => :Seg2)\nslave_element_ids = [1, 2]\nmaster_element_ids = [3, 4]\ns, m, D, M = calculate_mortar_assembly(elements, element_types, coords,\n                                       slave_element_ids, master_element_ids)\n\n# output\n\n([1, 2, 3], [4, 5, 6],\n  [1, 1]  =  0.416667\n  [2, 1]  =  0.208333\n  [1, 2]  =  0.208333\n  [2, 2]  =  0.666667\n  [3, 2]  =  0.125\n  [2, 3]  =  0.125\n  [3, 3]  =  0.25,\n  [1, 4]  =  0.366667\n  [2, 4]  =  0.133333\n  [1, 5]  =  0.25625\n  [2, 5]  =  0.65\n  [3, 5]  =  0.09375\n  [1, 6]  =  0.00208333\n  [2, 6]  =  0.216667\n  [3, 6]  =  0.28125)\n\n\ns and m contains slave and master dofs:\n\njulia> s, m\n([1, 2, 3], [4, 5, 6])\n\nD is slave side mortar matrix:\n\njulia> full(D[s,s])\n3×3 Array{Float64,2}:\n 0.416667  0.208333  0.0\n 0.208333  0.666667  0.125\n 0.0       0.125     0.25\n\nM is master side mortar matrix:\n\njulia> full(M[s,m])\n3×3 Array{Float64,2}:\n 0.366667  0.25625  0.00208333\n 0.133333  0.65     0.216667\n 0.0       0.09375  0.28125\n\n\n\n"
 },
 

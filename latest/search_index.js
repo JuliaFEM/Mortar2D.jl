@@ -85,7 +85,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "Mortar2D.project_from_master_to_slave",
     "category": "function",
-    "text": "project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)\n\nFind the projection of a master node xm, to the slave surface with nodes (xs1, xs2), in direction of slave surface normal defined by (ns1, ns2). Returns slave element dimensionless parameter, that is, to find coordinates in slave side:\n\nxs = 1/2*(1-xi)*xs1 + 1/2*(1+xi)*xs2\n\nExample\n\nxm = [4.0, -2.0]\nxs1 = [0.0, 0.0]\nxs2 = [4.0, 3.0]\nns1 = [3.0/5.0, -4.0/5.0]\nns2 = sqrt(2)/2*[1, -1]\nxi1 = project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)\nround(xi1, 6)\n\n# output\n\n-0.281575\n\n\n\n"
+    "text": "project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)\n\nFind the projection of a master node xm, to the slave surface with nodes (xs1, xs2), in direction of slave surface normal defined by (ns1, ns2). Returns slave element dimensionless parameter, that is, to find coordinates in slave side:\n\nxs = 1/2*(1-xi)*xs1 + 1/2*(1+xi)*xs2\n\nExample\n\nxm = [4.0, -2.0]\nxs1 = [0.0, 0.0]\nxs2 = [4.0, 3.0]\nns1 = [3.0/5.0, -4.0/5.0]\nns2 = sqrt(2)/2*[1, -1]\nxi1 = project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)\nround(xi1, digits=6)\n\n# output\n\n-0.281575\n\n\n\n"
 },
 
 {
@@ -93,7 +93,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "Mortar2D.project_from_slave_to_master",
     "category": "function",
-    "text": "project_from_slave_to_master(Val{:Seg2}, xs, ns, xm1, xm2)\n\nFind the projection of a slave node xs, having normal vector ns, onto master elements with nodes (xm1, xm2). Returns master element dimensionless parameter xi, that is,\n\nxm = 1/2*(1-xi)*xm1 + 1/2*(1+xi)*xm2\n\nExample\n\nxm1 = [7.0, 2.0]\nxm2 = [4.0, -2.0]\nxs = [0.0, 0.0]\nns = [3.0/5.0, -4.0/5.0]\nxi2 = project_from_slave_to_master(Val{:Seg2}, xs, ns, xm1, xm2)\nround(xi2, 6)\n\n# output\n\n1.833333\n\n\n\n"
+    "text": "project_from_slave_to_master(Val{:Seg2}, xs, ns, xm1, xm2)\n\nFind the projection of a slave node xs, having normal vector ns, onto master elements with nodes (xm1, xm2). Returns master element dimensionless parameter xi, that is,\n\nxm = 1/2*(1-xi)*xm1 + 1/2*(1+xi)*xm2\n\nExample\n\nxm1 = [7.0, 2.0]\nxm2 = [4.0, -2.0]\nxs = [0.0, 0.0]\nns = [3.0/5.0, -4.0/5.0]\nxi2 = project_from_slave_to_master(Val{:Seg2}, xs, ns, xm1, xm2)\nround(xi2, digits=6)\n\n# output\n\n1.833333\n\n\n\n"
 },
 
 {

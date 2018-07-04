@@ -18,7 +18,7 @@ xm2 = [4.0, -2.0]
 xs = [0.0, 0.0]
 ns = [3.0/5.0, -4.0/5.0]
 xi2 = project_from_slave_to_master(Val{:Seg2}, xs, ns, xm1, xm2)
-round(xi2, 6)
+round(xi2, digits=6)
 
 # output
 
@@ -51,7 +51,7 @@ xs2 = [4.0, 3.0]
 ns1 = [3.0/5.0, -4.0/5.0]
 ns2 = sqrt(2)/2*[1, -1]
 xi1 = project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)
-round(xi1, 6)
+round(xi1, digits=6)
 
 # output
 

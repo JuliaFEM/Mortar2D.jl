@@ -79,9 +79,9 @@ function project_from_master_to_slave(::Type{Val{:Seg2}}, xm, xs1, xs2, ns1, ns2
     c = nom_c / denom_c
     d = b^2 - 4*a*c
     if d < 0
-        warn("Mortar2D.calculate_projections(): negative discriminant $d")
-        warn("xm = $xm, xs1 = $xs1, xs2 = $xs2, ns1 = $ns1, ns2 = $ns2")
+        @warn("Mortar2D.calculate_projections(): negative discriminant $d")
+        @warn("xm = $xm, xs1 = $xs1, xs2 = $xs2, ns1 = $ns1, ns2 = $ns2")
     end
     sols = [-b + sqrt(d), -b - sqrt(d)]/(2.0*a)
-    return sols[indmin(abs.(sols))]
+    return sols[argmin(abs.(sols))]
 end

@@ -1,7 +1,7 @@
 # This file is a part of JuliaFEM.
 # License is MIT: see https://github.com/JuliaFEM/Mortar2D.jl/blob/master/LICENSE
 
-using Base.Test
+using Test
 using Mortar2D: project_from_slave_to_master, project_from_master_to_slave
 
 @testset "project slave node to master surface" begin

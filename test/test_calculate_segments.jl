@@ -1,7 +1,7 @@
 # This file is a part of JuliaFEM.
 # License is MIT: see https://github.com/JuliaFEM/Mortar2D.jl/blob/master/LICENSE
 
-using Base.Test
+using Test
 using Mortar2D: calculate_segments
 
 @testset "calculate segmentation" begin

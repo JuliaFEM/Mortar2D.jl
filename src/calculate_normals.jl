@@ -32,7 +32,7 @@ Dict{Int64,Array{Float64,1}} with 3 entries:
 
 """
 function calculate_normals(elements, element_types, X)
-    normals = similar(X)
+    normals = empty(X)
     for (elid, elcon) in elements
         @assert element_types[elid] == :Seg2
         d = X[elcon[2]] - X[elcon[1]]

@@ -3,15 +3,10 @@
 
 using Test
 
-test_files = String[]
-push!(test_files, "test_calculate_normals.jl")
-push!(test_files, "test_calculate_projections.jl")
-push!(test_files, "test_calculate_segments.jl")
-push!(test_files, "test_calculate_mortar_matrices.jl")
-push!(test_files, "test_calculate_mortar_assembly.jl")
-
 @testset "Mortar2D.jl" begin
-    for fn in test_files
-        include(fn)
-    end
+    @testset "test_calculate_normals.jl" begin include("test_calculate_normals.jl") end
+    @testset "test_calculate_projections.jl" begin include("test_calculate_projections.jl") end
+    @testset "test_calculate_segments.jl" begin include("test_calculate_segments.jl") end
+    @testset "test_calculate_mortar_matrices.jl" begin include("test_calculate_mortar_matrices.jl") end
+    @testset "test_calculate_mortar_assembly.jl" begin include("test_calculate_mortar_assembly.jl") end
 end

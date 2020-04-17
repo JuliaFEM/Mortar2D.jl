@@ -5,7 +5,6 @@ using Documenter
 
 deploydocs(
     repo = "github.com/JuliaFEM/Mortar2D.jl.git",
-    julia = "0.6",
     target = "build",
     deps = nothing,
     make = nothing)

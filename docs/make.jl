@@ -4,7 +4,7 @@
 using Documenter, Mortar2D
 
 makedocs(modules=[Mortar2D],
-         format = :html,
+         format = Documenter.HTML(),
          sitename = "Mortar2D",
          pages = [
                   "Introduction" => "index.md",

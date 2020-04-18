@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Theory · Mortar2D</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">Mortar2D</span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Introduction</a></li><li class="is-active"><a class="tocitem" href>Theory</a><ul class="internal"><li class="toplevel"><a class="tocitem" href="#References-1"><span>References</span></a></li></ul></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Theory</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Theory</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/JuliaFEM/Mortar2D.jl/blob/master/docs/src/theory.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Theory-1"><a class="docs-heading-anchor" href="#Theory-1">Theory</a><a class="docs-heading-anchor-permalink" href="#Theory-1" title="Permalink"></a></h1><p>Let us consider the simple following simple Laplace problem in the domain <span>$\Omega=\left\{ \left(x,y\right)\in\mathbb{R}^{2}|0\leq x,y\leq2\right\}$</span>.</p><p><img src="../figs/poisson_problem.png" alt/></p><p>The strong form of the problem is </p><div>\[\begin{align}
+-\Delta u^{\left(i\right)} &amp; =0\qquad\text{in }\Omega^{\left(i\right)},i=1,2\\
+u^{\left(1\right)} &amp; =0\qquad\text{on }\Gamma_{\mathrm{D}}^{\left(1\right)}\\
+u^{\left(1\right)}-u^{\left(2\right)} &amp; =0\qquad\text{on }\Gamma_{\mathrm{C}}\\
+\frac{\partial u^{\left(2\right)}}{\partial n} &amp; =g\qquad\text{on }\Gamma_{\mathrm{N}}^{\left(2\right)}
+\end{align}\]</div><p>Corresponding weak form of the problem is to find <span>$u^{\left(i\right)}\in\mathcal{U}$ and $\lambda\in\mathcal{M}$</span> such that</p><div>\[\begin{align}
+\int_{\Omega}\nabla u\cdot\nabla v\,\mathrm{d}x+\int_{\Gamma_{\mathrm{C}}}\lambda\left(v^{\left(1\right)}-v^{\left(2\right)}\right)\,\mathrm{d}s &amp; =\int_{\Omega}fv\,\mathrm{d}x+\int_{\Gamma_{\mathrm{N}}}gv\,\mathrm{d}s &amp;  &amp; \forall v^{\left(i\right)}\in\mathcal{V}^{\left(i\right)}\\
+\int_{\Gamma_{\mathrm{C}}}\mu\left(u^{\left(1\right)}-u^{\left(2\right)}\right)\,\mathrm{d}s &amp; =0 &amp;  &amp; \forall\mu\in\mathcal{M}
+\end{align}\]</div><p>In more general form is to find <span>$u^{\left(i\right)}\in\mathcal{U}$</span> and <span>$\lambda\in\mathcal{M}$</span> such that</p><div>\[\begin{align}
+a\left(u^{\left(i\right)},v^{\left(i\right)}\right)+b\left(\lambda,v^{\left(i\right)}\right) &amp; =0\qquad\forall v^{\left(i\right)}\in\mathcal{V}^{\left(i\right)}\\
+b\left(\mu,u^{\left(i\right)}\right) &amp; =0\qquad\forall\mu\in\mathcal{M}
+\end{align},\]</div><p>where</p><div>\[\begin{align}
+b\left(\lambda,v^{\left(i\right)}\right) &amp; =\int_{\Gamma_{\mathrm{C}}}\lambda\left(v^{\left(1\right)}-v^{\left(2\right)}\right)\,\mathrm{d}s\\
+b\left(\mu,u^{\left(i\right)}\right) &amp; =\int_{\Gamma_{\mathrm{C}}}\mu\left(u^{\left(1\right)}-u^{\left(2\right)}\right)\,\mathrm{d}s
+\end{align}\]</div><p>After substituting interpolation polynomials to weak form we get so called mortar matrices <span>$\boldsymbol{D}$</span> and <span>$\boldsymbol{M}$</span>:</p><div>\[\begin{align}
+\boldsymbol{D}\left[j,k\right] &amp; =\int_{\Gamma_{\mathrm{c}}^{\left(1\right)}}N_{j}N_{k}^{\left(1\right)}\,\mathrm{d}s,\\
+\boldsymbol{M}\left[j,l\right] &amp; =\int_{\Gamma_{\mathrm{c}}^{\left(1\right)}}N_{j}\left(N_{l}^{\left(2\right)}\circ\chi\right)\,\mathrm{d}s,
+\end{align}\]</div><p>where <span>$\chi$</span> is mapping between contacting surfaces. Let us define some contact pair:</p><pre><code class="language-julia">coords = Dict(1 =&gt; [8.0, 10.0],
+              2 =&gt; [7.0, 7.0],
+              3 =&gt; [4.0, 3.0],
+              4 =&gt; [0.0, 0.0],
+              5 =&gt; [-3.0, 0.0],
+              6 =&gt; [12.0, 10.0],
+              7 =&gt; [10.0, 4.0],
+              8 =&gt; [7.0, 2.0],
+              9 =&gt; [4.0, -2.0],
+              10 =&gt; [0.0, -3.0],
+              11 =&gt; [-4.0, -3.0])
+
+elements = Dict(
+    1 =&gt; [1, 2],
+    2 =&gt; [2, 3],
+    3 =&gt; [3, 4],
+    4 =&gt; [4, 5],
+    5 =&gt; [6, 7],
+    6 =&gt; [7, 8],
+    7 =&gt; [8, 9],
+    8 =&gt; [9, 10],
+    9 =&gt; [10, 11])
+
+slave_element_ids = [1, 2, 3, 4]
+
+slave_elements = Dict(i =&gt; elements[i] for i in slave_element_ids)
+
+master_element_ids = [5, 6, 7, 8, 9]
+
+element_types = Dict(i =&gt; :Seg2 for i=1:length(elements))</code></pre><p><img src="../figs/fig1.svg" alt/></p><p>For first order elements, normal direction is not unique. For that reason some preprocessing needs to be done to calculate unique nodal normals.</p><p>Unique nodal normals can be calculated several different ways, more or less sophisticated. An easy solution is just to take average of the normals of adjacing elements connecting to node <span>$k$</span>, i.e.</p><div>\[\begin{equation}
+\boldsymbol{n}_{k}=\frac{\sum_{e=1}^{n_{k}^{\mathrm{adj}}}\boldsymbol{n}_{k}^{\left(e\right)}}{\left\Vert \sum_{e=1}^{n_{k}^{\mathrm{adj}}}\boldsymbol{n}_{k}^{\left(e\right)}\right\Vert },
+\end{equation}\]</div><p>where <span>$\boldsymbol{n}_{k}^{\left(e\right)}$</span> means the normal calculated in element <span>$e$</span> in node <span>$k$</span>, and adj means adjacing elements.</p><p>This is implemented in function <code>calculate_normals</code>:</p><pre><code class="language-julia">normals = calculate_normals(slave_elements, element_types, coords)</code></pre><pre><code class="language-none">Dict{Int64,Array{Float64,1}} with 5 entries:
+  4 =&gt; [0.316228, -0.948683]
+  2 =&gt; [0.885779, -0.464107]
+  3 =&gt; [0.707107, -0.707107]
+  5 =&gt; [0.0, -1.0]
+  1 =&gt; [0.948683, -0.316228]</code></pre><p><img src="../figs/fig2.svg" alt/></p><p>This package follows the idea of continuous normal field, proposed by Yang et al., where all the quantities are projected using only slave side normals. If we wish to find the projection of a slave node <span>$\boldsymbol{x}_{\mathrm{s}}$</span>, having normal vector <span>$\boldsymbol{n}_{\mathrm{s}}$</span> onto a master element with nodes <span>$\boldsymbol{x}_{\mathrm{m1}}$</span> and <span>$\boldsymbol{x}_{\mathrm{m2}}$</span>, we are solving <span>$\xi^{\left(2\right)}$</span> from the equation </p><div>\[\begin{equation}
+\left[N_{1}\left(\xi^{\left(2\right)}\right)\boldsymbol{x}_{\mathrm{m1}}+N_{2}\left(\xi^{\left(2\right)}\right)\boldsymbol{x}_{\mathrm{m2}}-\boldsymbol{x}_{\mathrm{s}}\right]\times\boldsymbol{n}_{\mathrm{s}}=\boldsymbol{0}.
+\end{equation}\]</div><p>The equation to find the projection of a master node <span>$\boldsymbol{x}_{\mathrm{m}}$</span> onto a slave element with nodes <span>$\boldsymbol{x}_{\mathrm{s1}}$</span> and <span>$\boldsymbol{x}_{\mathrm{s2}}$</span> and normals <span>$\boldsymbol{n}_{\mathrm{s1}}$</span> and <span>$\boldsymbol{n}_{\mathrm{s1}}$</span> is </p><div>\[\begin{equation}
+\left[N_{1}\left(\xi^{\left(1\right)}\right)\boldsymbol{x}_{\mathrm{s1}}+N_{2}\left(\xi^{\left(1\right)}\right)\boldsymbol{x}_{\mathrm{s2}}-\boldsymbol{x}_{\mathrm{m}}\right]\times\left[N_{1}\left(\xi^{\left(1\right)}\right)\boldsymbol{n}_{s1}+N_{2}\left(\xi^{\left(1\right)}\right)\boldsymbol{n}_{\mathrm{s2}}\right]=\boldsymbol{0},
+\end{equation}\]</div><p>where <span>$\xi^{\left(1\right)}$</span> is the unknown parameter. First equation is linear and second is quadratic (in general). Second equation is also linear if <span>$\boldsymbol{n}_{\mathrm{s1}}=\boldsymbol{n}_{\mathrm{s2}}$</span>.</p><p>These equations are solved in function <code>project_from_master_to_slave</code> and <code>project_from_slave_to_master</code>. They are used in function <code>calculate_segments</code>, which is used to calculate segmentation of interface.</p><pre><code class="language-julia">segmentation = calculate_segments(slave_element_ids, master_element_ids,
+                                  elements, element_types, coords, normals)</code></pre><pre><code class="language-none">Dict{Int64,Array{Tuple{Int64,Array{Float64,1}},1}} with 4 entries:
+  4 =&gt; Tuple{Int64,Array{Float64,1}}[(8, [-1.0, -0.504971]), (9, [-0.504971, 1.…
+  2 =&gt; Tuple{Int64,Array{Float64,1}}[(5, [-1.0, -0.592152]), (6, [-0.592152, 0.…
+  3 =&gt; Tuple{Int64,Array{Float64,1}}[(7, [-1.0, 0.0403503]), (8, [0.0403503, 1.…
+  1 =&gt; Tuple{Int64,Array{Float64,1}}[(5, [-1.0, 1.0])]</code></pre><p><img src="../figs/fig3.svg" alt/></p><p>After segmentation is calculated, it&#39;s possible to integrate over non-conforming surface to calculate mortar matrices <span>$\boldsymbol{D}$</span> and <span>$\boldsymbol{M}$</span> or <span>$\boldsymbol{P}=\boldsymbol{D}^{-1}\boldsymbol{M}$</span>.  Calculation projection matrix <span>$\boldsymbol{P}$</span> is implemented as function <code>calculate_mortar_assembly</code>:</p><pre><code class="language-julia">s, m, D, M = calculate_mortar_assembly(elements, element_types, coords,
+                                       slave_element_ids, master_element_ids)</code></pre><pre><code class="language-none">([1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11], 
+  [1, 1]  =  1.05409
+  [2, 1]  =  0.527046
+  [1, 2]  =  0.527046
+  [2, 2]  =  2.72076
+  [3, 2]  =  0.833333
+  [2, 3]  =  0.833333
+  [3, 3]  =  3.33333
+  [4, 3]  =  0.833333
+  [3, 4]  =  0.833333
+  [4, 4]  =  2.66667
+  [5, 4]  =  0.5
+  [4, 5]  =  0.5
+  [5, 5]  =  1.0, 
+  [1 ,  6]  =  0.950404
+  [2 ,  6]  =  0.73246
+  [3 ,  6]  =  0.00709177
+  [1 ,  7]  =  0.630735
+  [2 ,  7]  =  2.59715
+  [3 ,  7]  =  0.622407
+  [2 ,  8]  =  0.737632
+  [3 ,  8]  =  2.49695
+  [4 ,  8]  =  0.167215
+  [2 ,  9]  =  0.0138965
+  [3 ,  9]  =  1.71965
+  [4 ,  9]  =  1.61681
+  [5 ,  9]  =  0.00712785
+  [3 , 10]  =  0.153905
+  [4 , 10]  =  2.00259
+  [5 , 10]  =  0.856952
+  [4 , 11]  =  0.213377
+  [5 , 11]  =  0.63592)</code></pre><p>This last command combines everything above to single command to calculate projection matrix needed for finite element codes.</p><h1 id="References-1"><a class="docs-heading-anchor" href="#References-1">References</a><a class="docs-heading-anchor-permalink" href="#References-1" title="Permalink"></a></h1><ul><li>Wikipedia contributors. &quot;Mortar methods.&quot; Wikipedia, The Free Encyclopedia. Wikipedia, The Free Encyclopedia.</li><li>Maday, Yvon, Cathy Mavriplis, and Anthony Patera. &quot;Nonconforming mortar element methods: Application to spectral discretizations.&quot; (1988).</li><li>Yang, Bin, Tod A. Laursen, and Xiaonong Meng. &quot;Two dimensional mortar contact methods for large deformation frictional sliding.&quot; International journal for numerical methods in engineering 62.9 (2005): 1183-1225.</li><li>Yang, Bin, and Tod A. Laursen. &quot;A contact searching algorithm including bounding volume trees applied to finite sliding mortar formulations.&quot; Computational Mechanics 41.2 (2008): 189-205.</li><li>Wohlmuth, Barbara I. &quot;A mortar finite element method using dual spaces for the Lagrange multiplier.&quot; SIAM journal on numerical analysis 38.3 (2000): 989-1012.</li></ul></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Introduction</a><a class="docs-footer-nextpage" href="../api/">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 18 April 2020 00:04">Saturday 18 April 2020</span>. Using Julia version 1.0.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

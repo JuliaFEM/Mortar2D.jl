@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>API · Mortar2D</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">Mortar2D</span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Introduction</a></li><li><a class="tocitem" href="../theory/">Theory</a></li><li class="is-active"><a class="tocitem" href>API</a><ul class="internal"><li><a class="tocitem" href="#Index-1"><span>Index</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>API</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>API</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/JuliaFEM/Mortar2D.jl/blob/master/docs/src/api.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="API-documentation-1"><a class="docs-heading-anchor" href="#API-documentation-1">API documentation</a><a class="docs-heading-anchor-permalink" href="#API-documentation-1" title="Permalink"></a></h1><h2 id="Index-1"><a class="docs-heading-anchor" href="#Index-1">Index</a><a class="docs-heading-anchor-permalink" href="#Index-1" title="Permalink"></a></h2><ul><li><a href="#Mortar2D.calculate_mortar_assembly"><code>Mortar2D.calculate_mortar_assembly</code></a></li><li><a href="#Mortar2D.calculate_mortar_matrices"><code>Mortar2D.calculate_mortar_matrices</code></a></li><li><a href="#Mortar2D.calculate_normals"><code>Mortar2D.calculate_normals</code></a></li><li><a href="#Mortar2D.calculate_segments"><code>Mortar2D.calculate_segments</code></a></li><li><a href="#Mortar2D.project_from_master_to_slave"><code>Mortar2D.project_from_master_to_slave</code></a></li><li><a href="#Mortar2D.project_from_slave_to_master"><code>Mortar2D.project_from_slave_to_master</code></a></li></ul><article class="docstring"><header><a class="docstring-binding" id="Mortar2D.calculate_normals" href="#Mortar2D.calculate_normals"><code>Mortar2D.calculate_normals</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia">calculate_normals(elements::Dict{Int, Vector{Int}},
+                  element_types::Dict{Int, Symbol},
+                  X::Dict{Int, Vector{Float64})</code></pre><p>Given elements, element types and node locations, calculate nodal normals by first calculating normal directions for each element and then averaging them in nodes. As a result we get unique normal direction defined to each node.</p><p><strong>Notes</strong></p><p>Only linear elements supported.</p><p><strong>Example</strong></p><pre><code class="language-julia">X = Dict(1 =&gt; [7.0, 7.0], 2 =&gt; [4.0, 3.0], 3 =&gt; [0.0, 0.0])
+elements = Dict(1 =&gt; [1, 2], 2 =&gt; [2, 3])
+element_types = Dict(1 =&gt; :Seg2, 2 =&gt; :Seg2)
+normals = calculate_normals(elements, element_types, X)
+
+# output
+
+Dict{Int64,Array{Float64,1}} with 3 entries:
+  2 =&gt; [0.707107, -0.707107]
+  3 =&gt; [0.6, -0.8]
+  1 =&gt; [0.8, -0.6]
+</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaFEM/Mortar2D.jl/blob/1579f78bb5f577e6aadff673d8c9c2ed68ba5fe9/src/calculate_normals.jl#L4-L33">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="Mortar2D.project_from_master_to_slave" href="#Mortar2D.project_from_master_to_slave"><code>Mortar2D.project_from_master_to_slave</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia">project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)</code></pre><p>Find the projection of a master node <code>xm</code>, to the slave surface with nodes (<code>xs1</code>, <code>xs2</code>), in direction of slave surface normal defined by (<code>ns1</code>, <code>ns2</code>). Returns slave element dimensionless parameter, that is, to find coordinates in slave side:</p><pre><code class="language-none">xs = 1/2*(1-xi)*xs1 + 1/2*(1+xi)*xs2</code></pre><p><strong>Example</strong></p><pre><code class="language-julia">xm = [4.0, -2.0]
+xs1 = [0.0, 0.0]
+xs2 = [4.0, 3.0]
+ns1 = [3.0/5.0, -4.0/5.0]
+ns2 = sqrt(2)/2*[1, -1]
+xi1 = project_from_master_to_slave(Val{:Seg2}, xm, xs1, xs2, ns1, ns2)
+round(xi1, digits=6)
+
+# output
+
+-0.281575</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaFEM/Mortar2D.jl/blob/1579f78bb5f577e6aadff673d8c9c2ed68ba5fe9/src/calculate_projections.jl#L35-L61">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="Mortar2D.project_from_slave_to_master" href="#Mortar2D.project_from_slave_to_master"><code>Mortar2D.project_from_slave_to_master</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia">project_from_slave_to_master(Val{:Seg2}, xs, ns, xm1, xm2)</code></pre><p>Find the projection of a slave node <code>xs</code>, having normal vector <code>ns</code>, onto master elements with nodes (<code>xm1</code>, <code>xm2</code>). Returns master element dimensionless parameter xi, that is,</p><pre><code class="language-none">xm = 1/2*(1-xi)*xm1 + 1/2*(1+xi)*xm2</code></pre><p><strong>Example</strong></p><pre><code class="language-julia">xm1 = [7.0, 2.0]
+xm2 = [4.0, -2.0]
+xs = [0.0, 0.0]
+ns = [3.0/5.0, -4.0/5.0]
+xi2 = project_from_slave_to_master(Val{:Seg2}, xs, ns, xm1, xm2)
+round(xi2, digits=6)
+
+# output
+
+1.833333</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaFEM/Mortar2D.jl/blob/1579f78bb5f577e6aadff673d8c9c2ed68ba5fe9/src/calculate_projections.jl#L4-L28">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="Mortar2D.calculate_segments" href="#Mortar2D.calculate_segments"><code>Mortar2D.calculate_segments</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia">calculate_segments(slave_element_ids::Vector{Int},
+                   master_element_ids::Vector{Int},
+                   elements::Dict{Int, Vector{Int}},
+                   element_types::Dict{Int, Symbol},
+                   coords::Dict{Int, Vector{Float64}},
+                   normals::Dict{Int, Vector{Float64}})</code></pre><p>Given slave surface elements, master surface elements, nodal coordinates and normal direction on nodes of slave surface elements, calculate contact segments.</p><p>Return type is a dictionary, where key is slave element id and values is a list of master elements giving contribution to that slave elements and xi-coordinates of slave side element.</p><p><strong>Example</strong></p><pre><code class="language-julia">elements = Dict(1 =&gt; [1, 2], 2 =&gt; [3, 4])
+element_types = Dict(1 =&gt; :Seg2, 2 =&gt; :Seg2)
+coords = Dict(
+    1 =&gt; [1.0, 2.0],
+    2 =&gt; [3.0, 2.0],
+    3 =&gt; [0.0, 2.0],
+    4 =&gt; [2.0, 2.0])
+normals = Dict(
+    1 =&gt; [0.0, -1.0],
+    2 =&gt; [0.0, -1.0])
+slave_ids = [1]
+master_ids = [2]
+segments = calculate_segments(slave_ids, master_ids, elements,
+                              element_types, coords, normals)
+
+# output
+
+Dict{Int64,Array{Tuple{Int64,Array{Float64,1}},1}} with 1 entry:
+  1 =&gt; Tuple{Int64,Array{Float64,1}}[(2, [-1.0, -0.0])]
+</code></pre><p>Here, output result means that slave element #1 has segment with master element(s) #2 with dimensionless slave element coordinate xi = [-1, 0]. That is, the start and end point of projection in physical coordinate system is:</p><pre><code class="language-none">x_start = 1/2*(1-xi[1])*xs1 + 1/2*(1+xi[1])*xs2
+x_stop = 1/2*(1-xi[2])*xs1 + 1/2*(1+xi[2])*xs2</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaFEM/Mortar2D.jl/blob/1579f78bb5f577e6aadff673d8c9c2ed68ba5fe9/src/calculate_segments.jl#L6-L54">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="Mortar2D.calculate_mortar_matrices" href="#Mortar2D.calculate_mortar_matrices"><code>Mortar2D.calculate_mortar_matrices</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia">calculate_mortar_matrices(slave_element_id::Int,
+                          elements::Dict{Int, Vector{Int}},
+                          element_types::Dict{Int, Symbol},
+                          coords::Dict{Int, Vector{Float64}},
+                          normals::Dict{Int, Vector{Float64}},
+                          segmentation:MortarSegmentation)</code></pre><p>Calculate mortar matrices De and Me for slave element.</p><p><strong>Example</strong></p><pre><code class="language-julia">elements = Dict(
+    1 =&gt; [1, 2],
+    2 =&gt; [3, 4])
+element_types = Dict(
+    1 =&gt; :Seg2,
+    2 =&gt; :Seg2)
+coords = Dict(
+    1 =&gt; [1.0, 2.0],
+    2 =&gt; [3.0, 2.0],
+    3 =&gt; [2.0, 2.0],
+    4 =&gt; [0.0, 2.0])
+normals = Dict(
+    1 =&gt; [0.0, -1.0],
+    2 =&gt; [0.0, -1.0])
+segmentation = Dict(1 =&gt; [(2, [-1.0, 0.0])])
+De, Me = calculate_mortar_matrices(1, elements, element_types,
+                                   coords, normals, segmentation)
+
+# output
+
+([0.583333 0.166667; 0.166667 0.0833333], Dict(2=&gt;[0.541667 0.208333; 0.208333 0.0416667]))
+</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaFEM/Mortar2D.jl/blob/1579f78bb5f577e6aadff673d8c9c2ed68ba5fe9/src/calculate_mortar_matrices.jl#L9-L46">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="Mortar2D.calculate_mortar_assembly" href="#Mortar2D.calculate_mortar_assembly"><code>Mortar2D.calculate_mortar_assembly</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia">calculate_mortar_assembly(elements::Dict{Int, Vector{Int}},
+                          element_types::Dict{Int, Symbol},
+                          coords::Dict{Int, Vector{Float64}},
+                          slave_element_ids::Vector{Int},
+                          master_element_ids::Vector{Int})</code></pre><p>Given data, calculate projection matrices <code>D</code> and <code>M</code>. This is the main function of package. Relation between matrices is <span>$D u_s = M u_m$</span>, where <span>$u_s$</span> is slave nodes and <span>$u_m$</span> master nodes.</p><p><strong>Example</strong></p><p>Calculate mortar matrices for simple problem in README.md</p><pre><code class="language-julia">Xs = Dict(1 =&gt; [0.0, 1.0], 2 =&gt; [5/4, 1.0], 3 =&gt; [2.0, 1.0])
+Xm = Dict(4 =&gt; [0.0, 1.0], 5 =&gt; [1.0, 1.0], 6 =&gt; [2.0, 1.0])
+coords = merge(Xm , Xs)
+Es = Dict(1 =&gt; [1, 2], 2 =&gt; [2, 3])
+Em = Dict(3 =&gt; [4, 5], 4 =&gt; [5, 6])
+elements = merge(Es, Em)
+element_types = Dict(1 =&gt; :Seg2, 2 =&gt; :Seg2, 3 =&gt; :Seg2, 4 =&gt; :Seg2)
+slave_element_ids = [1, 2]
+master_element_ids = [3, 4]
+s, m, D, M = calculate_mortar_assembly(elements, element_types, coords,
+                                       slave_element_ids, master_element_ids)
+
+# output
+
+([1, 2, 3], [4, 5, 6],
+  [1, 1]  =  0.416667
+  [2, 1]  =  0.208333
+  [1, 2]  =  0.208333
+  [2, 2]  =  0.666667
+  [3, 2]  =  0.125
+  [2, 3]  =  0.125
+  [3, 3]  =  0.25,
+  [1, 4]  =  0.366667
+  [2, 4]  =  0.133333
+  [1, 5]  =  0.25625
+  [2, 5]  =  0.65
+  [3, 5]  =  0.09375
+  [1, 6]  =  0.00208333
+  [2, 6]  =  0.216667
+  [3, 6]  =  0.28125)
+</code></pre><p><code>s</code> and <code>m</code> contains slave and master dofs:</p><pre><code class="language-julia-repl">julia&gt; s, m
+([1, 2, 3], [4, 5, 6])</code></pre><p><code>D</code> is slave side mortar matrix:</p><pre><code class="language-julia-repl">julia&gt; full(D[s,s])
+3×3 Array{Float64,2}:
+ 0.416667  0.208333  0.0
+ 0.208333  0.666667  0.125
+ 0.0       0.125     0.25</code></pre><p><code>M</code> is master side mortar matrix:</p><pre><code class="language-julia-repl">julia&gt; full(M[s,m])
+3×3 Array{Float64,2}:
+ 0.366667  0.25625  0.00208333
+ 0.133333  0.65     0.216667
+ 0.0       0.09375  0.28125</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/JuliaFEM/Mortar2D.jl/blob/1579f78bb5f577e6aadff673d8c9c2ed68ba5fe9/src/calculate_mortar_assembly.jl#L4-L77">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../theory/">« Theory</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Saturday 18 April 2020 00:04">Saturday 18 April 2020</span>. Using Julia version 1.0.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
